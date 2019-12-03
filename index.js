@@ -69,4 +69,4 @@ feedOption.addEventListener('change', function(event){
 })
 
 
-getData(20)
+getData('topsongs' ,10)
