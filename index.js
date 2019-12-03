@@ -1,6 +1,6 @@
 const rootUrl = 'https://itunes.apple.com/us/rss'
 const topSongsUrl = rootUrl + '/topsongs/all'
-const topAlbumsUrl = rootUrl + '/topalbums/all/limit=20/json'
+const topAlbumsUrl = rootUrl + '/topalbums/all'
 
 
 async function getData (feedType, quantity) {
@@ -38,8 +38,20 @@ async function getData (feedType, quantity) {
     }
   } else {
     const request = await fetch(topAlbumsUrl + `/limit=${quantity}/json`)
-    const data = await request.json();
-    console.log(data)
+    let data = await request.json();
+    data = data.feed.entry
+    for (let i = 0; i < data.length; i++) {
+      const albumName = data[i]['im:name'].label
+      const artistName = data[i]['im:artist'].label
+      const image = data[i]['im:image'][0].label
+      songContainer.innerHTML += `
+    <div class="song">
+      <img src='${image}'>
+      <p>${albumName}</p>
+      <p>${artistName}</p>
+    </div>
+    `
+    }
   }
 
 }
