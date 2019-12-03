@@ -1,11 +1,12 @@
 const rootUrl = 'https://itunes.apple.com/us/rss'
-const topSongsUrl = rootUrl + '/topsongs/all/limit=20/json'
+const topSongsUrl = rootUrl + '/topsongs/all'
 const topAlbumsUrl = rootUrl + '/topalbums/all/limit=20/json'
 
 
-async function getData () {
+async function getData (quantity) {
   const songContainer = document.getElementById('songs-content')
-  const request = await fetch(topSongsUrl)
+  songContainer.innerHTML = ''
+  const request = await fetch(topSongsUrl + `/limit=${quantity}/json`)
   let data = await request.json()
   console.log(data)
   data = data.feed.entry
@@ -40,4 +41,9 @@ async function getData () {
 
 }
 
-getData()
+const quantityOption = document.getElementById('quantity')
+quantityOption.addEventListener('change', function(event){ // change event use for select tag
+  getData(event.target.value);
+})
+
+getData(20)
